@@ -82,22 +82,30 @@ function setup() {
 function draw() {
   //trex.debug = true;
   background("lightblue");
-  text("Score: "+ score, 500,50);
-  text("Highscore:"+ highscore,500,30);
+  text("Score: "+ score,trex.x,trex.y-90);
+  text("Highscore:"+ highscore,trex.x,trex.y-100);
   
   if (gameState===PLAY){
     score = score + Math.round(getFrameRate()/60);
-    ground.velocityX = -(8 + 3*score/100);
-  
+    ground.velocityX = (8 + 3*score/100);
+    trex.velocityX = (8 + 3*score/100);
+    gameOver.x = trex.x
+    restart.x = trex.x
+    gameOver.y = trex.y-180
+    restart.y = trex.y-140
+    invisibleGround.x = ground.x
+    ground.x = trex.x + 200
+    camera.x = trex.x
+    camera.y = trex.y
     if(keyDown("space") && trex.y >= 159) {
       trex.velocityY = -12;
     }
   
     trex.velocityY = trex.velocityY + 0.8
   
-    if (ground.x <720){
-      ground.x = ground.width/2;
-    }
+    // if (ground.x <720){
+    //   ground.x = ground.width/2;
+    // }
   
     trex.collide(invisibleGround);
     spawnClouds();
@@ -120,6 +128,8 @@ function draw() {
     //set velcity of each game object to 0
     ground.velocityX = 0;
     trex.velocityY = 0;
+    invisibleGround.velocityX = 0;
+    trex.velocityX = 0;
     obstaclesGroup.setVelocityXEach(0);
     cloudsGroup.setVelocityXEach(0);
     
@@ -141,12 +151,12 @@ function draw() {
 
 function spawnClouds() {
   //write code here to spawn the clouds
-  if (frameCount % 60 === 0) {
-    var cloud = createSprite(600,120,40,10);
-    cloud.y = Math.round(random(80,120));
+  if (frameCount % 120 === 0) {
+    var cloud = createSprite(trex.x+1000,100,40,10);
+    cloud.y = Math.round(random(windowHeight/30,windowHeight/15));
     cloud.addImage(cloudImage);
-    cloud.scale = 0.5;
-    cloud.velocityX = -3;
+    cloud.scale = 1.3;
+    // cloud.velocityX = -3;
     
      //assign lifetime to the variable
     cloud.lifetime = 200;
@@ -163,9 +173,9 @@ function spawnClouds() {
 
 function spawnObstacles() {
   if(frameCount % 100 === 0) {
-    var obstacle = createSprite(windowWidth+60,windowHeight/6,10,40);
+    var obstacle = createSprite(trex.x+1000,windowHeight/6,10,40);
     //obstacle.debug = true;
-    obstacle.velocityX = -(8 + 3*score/100);
+    // obstacle.velocityX = -(8 + 3*score/100);
     
     //generate random obstacles
     var rand = Math.round(random(1,6));
