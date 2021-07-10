@@ -82,17 +82,15 @@ function setup() {
 function draw() {
   //trex.debug = true;
   background("lightblue");
-  text("Score: "+ score,trex.x,trex.y-90);
+  textSize(14)
+  text("Score: "+ score,trex.x,trex.y-80);
   text("Highscore:"+ highscore,trex.x,trex.y-100);
   
   if (gameState===PLAY){
     score = score + Math.round(getFrameRate()/60);
     ground.velocityX = (8 + 3*score/100);
     trex.velocityX = (8 + 3*score/100);
-    gameOver.x = trex.x
-    restart.x = trex.x
-    gameOver.y = trex.y-180
-    restart.y = trex.y-140
+    
     invisibleGround.x = ground.x
     ground.x = trex.x + 200
     camera.x = trex.x
@@ -118,6 +116,12 @@ function draw() {
   else if (gameState === END) {
     gameOver.visible = true;
     restart.visible = true;
+    gameOver.x = trex.x
+    restart.x = trex.x
+    gameOver.y = trex.y-180
+    restart.y = trex.y-140
+    camera.position.x = gameOver.x;
+    camera.position.y = gameOver.y;
     
     if (score > highscore)
     {
